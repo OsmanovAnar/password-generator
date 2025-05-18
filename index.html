@@ -2,81 +2,83 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./style/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="./style/style.css" />
     <script src="./script/script.js" defer></script>
 </head>
 
 <body>
-
-    <div class="app">
+    <main class="container">
 
         <header class="header">
-
-            <h1>NEXUS</h1>
-            <h3>PASSWORD GENERATOR</h3>
-
+            <h1 class="app-title">NEXUS</h1>
+            <h2 class="subtitle">Password Generator</h2>
         </header>
 
+        <section class="output">
+            <div class="output-box" id="password-output"></div>
+            <button class="copy-button" id="copy-button" aria-label="Copy password">
+                <img src="./icons/copy.png" alt="Copy" />
+            </button>
+        </section>
 
+        <section class="strength-indicator">
+            <h3 class="strength-title">
+                <img src="./icons/shield-check.png" alt="Strength icon" />
+                Password Strength
+            </h3>
+            <p class="strength-level" id="strength-level">Weak</p>
+        </section>
 
+        <hr />
 
-        <div class="result">
-            <div class="result__box"></div>
-            <div class="result__copyBtd"><img src="./icons/copy.png" alt=""></div>
-        </div>
+        <section class="length-control">
+            <label for="range-slider" class="length-label">Length</label>
+            <span id="length-value">0</span>
+        </section>
+        <input id="range-slider" type="range" min="1" max="32" value="0" />
 
-        <div class="password-strength">
-            <h3><img src="./icons/shield.svg" alt=""> PASSWORD STRENGTH </h3>
-            <p class="password-level">слабый</p>
-        </div>
+        <section class="options">
+            <h3 class="options-title">Character Types</h3>
 
-        <hr>
+            <label class="option">
+                <span>Uppercase</span>
+                <div class="toggle">
+                    <input type="checkbox" id="uppercase" />
+                    <span class="slider"></span>
+                </div>
+            </label>
 
+            <label class="option">
+                <span>Lowercase</span>
+                <div class="toggle">
+                    <input type="checkbox" id="lowercase" />
+                    <span class="slider"></span>
+                </div>
+            </label>
 
-        <div class="slider">
-            <h3>LENGTH</h3>
-            <span>0</span>
-        </div>
-        <input id="range" type="range">
+            <label class="option">
+                <span>Numbers</span>
+                <div class="toggle">
+                    <input type="checkbox" id="numbers" />
+                    <span class="slider"></span>
+                </div>
+            </label>
 
+            <label class="option">
+                <span>Symbols</span>
+                <div class="toggle">
+                    <input type="checkbox" id="symbols" />
+                    <span class="slider"></span>
+                </div>
+            </label>
+        </section>
 
+        <button id="generate-button" class="generate-button">Generate</button>
 
-
-        <h3 id="character-types">CHARACTER TYPES</h3>
-
-        <div class="character">
-
-            <div class="types">UPPERCASE <label class="switch">
-                    <input type="checkbox"> <span class="switch-slider"></span>
-                </label></div>
-            <div class="types">Lowercase <label class="switch">
-                    <input type="checkbox"><span class="switch-slider"></span>
-                </label></div>
-            <div class="types">Numbers <label class="switch">
-                    <input type="checkbox"><span class="switch-slider"></span>
-                </label></div>
-            <div class="types">Symbols <label class="switch">
-                    <input type="checkbox"><span class="switch-slider"></span>
-                </label></div>
-
-        </div>
-
-        <button id="generateBtn">generate</button>
-
-
-
-
-
-
-    </div>
-
-
-
-
-
+    </main>
 </body>
 
 </html>
