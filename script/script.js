@@ -20,117 +20,88 @@ let elements = {
     lengthSlider: document.querySelector("#range-slider"),
     lengthValue: document.querySelector("#length-value"),
     resultBox: document.querySelector("#password-output"),
-    cipyBtn: document.querySelector("#copy-button"),
+    copyBtn: document.querySelector("#copy-button"),
     generatorBtn: document.querySelector("#generate-button"),
     strenghValue: document.querySelector("#strength-level"),
-    strenghIcon: document.querySelector("#Strength icon"),
+    strenghIcon: document.querySelector("#strength-icon"),
     checkboxes: {
         uppercase: document.querySelector("#uppercase"),
         lowercase: document.querySelector("#lowercase"),
         numbers: document.querySelector("#numbers"),
         symbols: document.querySelector("#symbols"),
     },
-}
-
+};
 
 function initEvents() {
     //Изменение длины пароля
-    elements.lengthSlider.addEventListener('input', () => {
-        const Length = elements.lengthSlider.value
-        config.length = Length
-        elements.lengthValue.textContent = length
-    })
-
+    elements.lengthSlider.addEventListener("input", () => {
+        const length = elements.lengthSlider.value;
+        config.length = length;
+        elements.lengthValue.textContent = length;
+    });
 
     //Обработка чекбоксов
-    Object.keys(elements.checkboxes).forEach(type => {
+    Object.keys(elements.checkboxes).forEach((type) => {
         console.log(type);
-        elements.checkboxes[type].addEventListener('change', () => {
-            config[type] = elements.checkboxes[type].checked
-        })
-    })
-
+        elements.checkboxes[type].addEventListener("change", () => {
+            config[type] = elements.checkboxes[type].checked;
+        });
+    });
 
     //Кнопка генерации пароля
-    elements.generatorBtn.addEventListener('click', generatePassword);
+    elements.generatorBtn.addEventListener("click", generatePassword);
 
     //кнопка копиррвания
-    elements.copyBtn.addEventListener('click', copyClickboard)
-
+    elements.copyBtn.addEventListener("click", copyClipboard);
 }
-
-
 
 //генерация пароля
 function generatePassword() {
-    const atLeanstOneSelected = Object.values(config).come(volue => typeof value === 'boolean' && value === true)
+
+    const atLeanstOneSelected = Object.values(config).some(
+        (value) => typeof value === "boolean" && value === true
+    );
 
     if (!atLeanstOneSelected) {
-        elements.resultBox.textContent = 'Выберите хотябы один тип символов'
-        updateStrength(0)
-        return
+        elements.resultBox.textContent = "Выберите хотя бы один тип символов";
+        updateStrength(0);
+        return;
     }
 
+    let allChars = "";
 
+    Object.keys(charSets).forEach((type) => {
+        if (config[type]) {
+            allChars += charSets[type];
+        }
+    });
 
+    let password = "";
+    const selectedTypes = Object.keys(charSets).filter((type) => config[type]);
 
+    selectedTypes.forEach((type) => {
+        const charSet = charSets[type];
+        const randomChar = charSet.charAt(Math.floor(Math.random() * charSet.length));
+        password += randomChar;
+    });
 
-
-
-
-
-}
-
-
-
-//Формирование набора возможных символов
-let allChars = ''
-Object.keys(charSets).forEach(type => {
-    if (config[type]) {
-        allChars + - charSets[type]
+    for (let i = selectedTypes.length; i < config.length; i++) {
+        const randomIndex = Math.floor(Math.random() * allChars.length);
+        password += allChars.charAt(randomIndex);
     }
-})
 
-
-
-//Генератор пароля
-let password = ''
-const length = config.length
-
-
-const selectedTypes = Object.keys(charSets).filter(type => config[type]);
-
-selectedTypes.forEach(type => {
-    const charSets = charSets[type]
-    const randomChar = charSet.charAt(Math.floor(Math.random() * charSet.length))
-    password += randomChar
-})
-
-
-for (let i = selectedTypes.length; i < config.length; i++) {
-    const randomIndex = Math.floot(Math.random() * allChars.length)
-    password += allChars.charAt(randomIndex)
+    password = shuffleString(password);
+    elements.resultBox.textContent = password;
+    updateStrength(calculateStrength(password));
 }
-
-password = shuffleString(password)
-
-elements.resultBox.textContent = password
-updateStrength(calculateStrength())
-
 
 function shuffleString(str) {
-    const array = str.split('')
+    const array = str.split("");
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        [array[i], array[j]] = [array[j], array[i]]
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return array.join('')
+    return array.join("");
 }
 
-
-function init() {
-
-    initElements()
-    initEvents()
-    generatePassword()
-}
+initEvents()
