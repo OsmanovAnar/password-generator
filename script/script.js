@@ -104,4 +104,95 @@ function shuffleString(str) {
     return array.join("");
 }
 
-initEvents()
+
+
+//Рассчет сложности пароля
+
+
+
+function calculateStrength() {
+    const { length, uppercase, lowercase, numbers, symbols } = config
+
+    //Базовый показатель, зависящий от длины
+
+
+    let strengh = Math.min(5, Math.floor(length / 6))
+
+    //Добавляем баллы за разнообразие символов
+
+    let varietyScore = 0
+
+    if (uppercase) varietyScore++
+    if (lowercase) varietyScore++
+    if (numbers) varietyScore++
+    if (symbols) varietyScore++
+
+
+
+    // Итоговая оценка от 0 до 4
+
+    return Math.min(4, Math.floor((strengh + varietyScore) / 2))
+}
+
+
+
+
+
+//Обнорвлоение индликатора сложности пароля 
+function updateStrength(strengh) {
+    const strenghLabels = ['Очень слабый', "слабый", "средний", "сложный", "очень сложный"]
+    elements.strenghValue.textContent = strenghLabels[strengh]
+
+
+
+    //Цвет завитзящий от сложности пароля 
+
+
+    const colors = ['#ff3b30', '#ff9500', '#ffcc00', '#34c759', '#4cd964']
+    elements.strenghValue.computedStyleMap.color - colors[strengh]
+
+
+    //цвет иконки щита
+    if (elements.strenghIcon) {
+        elements.strenghIcon.computedStyleMap.color = colors[strengh]
+    }
+}
+
+function copyClipboard() {
+    const password = elements.resultBox.textContent
+
+    if (!password || password === 'Выберите хотябы один тип символов') return
+
+    navigator.clipboard
+        .writeText(password)
+        .then(() => {
+            //Ангимация успешного копирования)
+            const originalText = elements.copyBtn.innerHTML;
+            elements.copyBtn.innerHTML = '<img src="../icons/check.png">'
+
+            setTimeout(() => {
+                elements.copyBtn.innerHTML = originalText
+            }, 1500)
+        })
+        .catch(err => {
+            console.error('Не удалось скопиировать текст:', err)
+        })
+
+}
+
+
+
+
+
+
+
+
+
+
+
+function init() {
+    initEvents()
+    generatePassword()
+}
+
+document.addEventListener('DOMContentLoaded', init)
